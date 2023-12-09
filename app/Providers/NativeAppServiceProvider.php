@@ -17,7 +17,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     const HEIGHT = 9999;
     const POSITION_X = 9999;
     const POSITION_Y = 0;
-    const APP_ICON = 'app/images/menuBarIcon.png';
+    const APP_ICON = 'storage/images/menuBarIcon.png';
     const SHOW_DOCK_ICON = true;
     const SHOW_CONTEXT_MENU_ONLY = false;
 
@@ -42,7 +42,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     {
         MenuBar::create()
             ->route('tray')
-            ->icon(storage_path(self::APP_ICON))
+            ->icon(public_path(self::APP_ICON))
             ->onlyShowContextMenu(self::SHOW_CONTEXT_MENU_ONLY)
             ->showDockIcon(self::SHOW_DOCK_ICON)
             ->height(274)
