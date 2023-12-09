@@ -2,18 +2,86 @@
 
 namespace App\Providers;
 
+use Native\Laravel\Dialog;
+use Native\Laravel\Facades\MenuBar;
+use Native\Laravel\Facades\Notification;
 use Native\Laravel\Facades\Window;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Native\Laravel\Menu\Menu;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
+    const TITLE = 'Serato DJ Streaming';
+    const GIT_URL = 'https://github.com/victorlopezalonso/serato-dj-streaming-php';
+    const WIDTH = 1240;
+    const HEIGHT = 9999;
+    const POSITION_X = 9999;
+    const POSITION_Y = 0;
+    const APP_ICON = 'app/images/menuBarIcon.png';
+    const SHOW_DOCK_ICON = true;
+    const SHOW_CONTEXT_MENU_ONLY = false;
+
+    public function createMenu(): void
+    {
+        Menu::new()
+
+            ->appMenu()
+            ->editMenu('Edit')
+            ->submenu('View', Menu::new()
+                ->toggleFullscreen()
+                ->separator()
+                ->toggleDevTools()
+            )
+            ->submenu('About', Menu::new()
+                ->link(self::GIT_URL, 'Github Repository')
+            )
+            ->register();
+    }
+
+    public function createMenuBar(): void
+    {
+        MenuBar::create()
+            ->route('tray')
+            ->icon(storage_path(self::APP_ICON))
+            ->onlyShowContextMenu(self::SHOW_CONTEXT_MENU_ONLY)
+            ->showDockIcon(self::SHOW_DOCK_ICON)
+            ->height(274)
+            ->withContextMenu(
+                Menu::new()
+                    ->label(self::TITLE)
+                    ->checkbox('Show Notifications',false)
+                    ->separator()
+                    ->link(self::GIT_URL, 'Learn more…')
+                    ->separator()
+                    ->quit()
+            );
+    }
+
+    public function showNotification(): void
+    {
+        Notification::title('Notification Title')
+            ->message('Notification Message')
+            ->show();
+    }
+
     /**
      * Executed once the native application has been booted.
      * Use this method to open windows, register global shortcuts, etc.
      */
     public function boot(): void
     {
-        Window::open();
+        $this->createMenu();
+        $this->createMenuBar();
+
+        Window::open()
+            ->route('home')
+            ->title(self::TITLE)
+            ->width(self::WIDTH)
+            ->height(self::HEIGHT)
+            ->position(self::POSITION_X, self::POSITION_Y)
+            ->rememberState();
+
+//        $this->showNotification();
     }
 
     /**
