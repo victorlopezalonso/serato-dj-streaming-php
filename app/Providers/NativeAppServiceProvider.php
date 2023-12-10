@@ -11,15 +11,15 @@ use Native\Laravel\Menu\Menu;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
-    const TITLE = 'Serato DJ Streaming';
-    const GIT_URL = 'https://github.com/victorlopezalonso/serato-dj-streaming-php';
-    const WIDTH = 1240;
-    const HEIGHT = 9999;
-    const POSITION_X = 9999;
-    const POSITION_Y = 0;
-    const APP_ICON = 'storage/images/menuBarIcon.png';
-    const SHOW_DOCK_ICON = true;
-    const SHOW_CONTEXT_MENU_ONLY = false;
+    public const TITLE = 'Serato DJ Streaming';
+    public const GIT_URL = 'https://github.com/victorlopezalonso/serato-dj-streaming-php';
+    public const WIDTH = 1240;
+    public const HEIGHT = 9999;
+    public const POSITION_X = 9999;
+    public const POSITION_Y = 0;
+    public const APP_ICON = 'storage/images/menuBarIcon.png';
+    public const SHOW_DOCK_ICON = true;
+    public const SHOW_CONTEXT_MENU_ONLY = false;
 
     public function createMenu(): void
     {
@@ -27,12 +27,16 @@ class NativeAppServiceProvider implements ProvidesPhpIni
 
             ->appMenu()
             ->editMenu('Edit')
-            ->submenu('View', Menu::new()
+            ->submenu(
+                'View',
+                Menu::new()
                 ->toggleFullscreen()
                 ->separator()
                 ->toggleDevTools()
             )
-            ->submenu('About', Menu::new()
+            ->submenu(
+                'About',
+                Menu::new()
                 ->link(self::GIT_URL, 'Github Repository')
             )
             ->register();
@@ -49,7 +53,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->withContextMenu(
                 Menu::new()
                     ->label(self::TITLE)
-                    ->checkbox('Show Notifications',false)
+                    ->checkbox('Show Notifications', false)
                     ->separator()
                     ->link(self::GIT_URL, 'Learn more…')
                     ->separator()
@@ -70,18 +74,18 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-        $this->createMenu();
-        $this->createMenuBar();
+        //        $this->createMenu();
+        //        $this->createMenuBar();
+        //
+        //        Window::open()
+        //            ->route('home')
+        //            ->title(self::TITLE)
+        //            ->width(self::WIDTH)
+        //            ->height(self::HEIGHT)
+        //            ->position(self::POSITION_X, self::POSITION_Y)
+        //            ->rememberState();
 
-        Window::open()
-            ->route('home')
-            ->title(self::TITLE)
-            ->width(self::WIDTH)
-            ->height(self::HEIGHT)
-            ->position(self::POSITION_X, self::POSITION_Y)
-            ->rememberState();
-
-//        $this->showNotification();
+        //        $this->showNotification();
     }
 
     /**

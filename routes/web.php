@@ -1,5 +1,6 @@
 <?php
 
+use Src\Serato\Infrastructure\Laravel\Controller\SeratoTrackListController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', SeratoTrackListController::class)->name('home');
+
+//Route::get('/', function () {
+//    return view('welcome');
+//})->name('home');
 
 Route::get('/tray', function () {
     return view('tray');

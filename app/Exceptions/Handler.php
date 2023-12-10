@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use http\Client\Request;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -25,6 +26,13 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (\Exception $e) {
+            return response()->json([
+                'file' => $e->getFile() . ':' . $e->getLine(),
+                'message' => $e->getMessage(),
+            ], 500, [], JSON_PRETTY_PRINT);
         });
     }
 }
